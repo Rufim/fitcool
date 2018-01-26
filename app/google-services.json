@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "910077357068",
+    "firebase_url": "https://fitcool-1359.firebaseio.com",
+    "project_id": "fitcool-1359",
+    "storage_bucket": "fitcool-1359.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910077357068:android:339b720f00a732c9",
+        "android_client_info": {
+          "package_name": "org.fitcool.app.fitcoolwrapper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "910077357068-7l2phuuot1ltdao7vc2jp4jjtoo0jfsb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL22pO0FESilxnCN6fY9ebLMquHRe3y0c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910077357068:android:aec6479414786e84",
+        "android_client_info": {
+          "package_name": "ru.webclient.fitcool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "910077357068-7l2phuuot1ltdao7vc2jp4jjtoo0jfsb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL22pO0FESilxnCN6fY9ebLMquHRe3y0c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

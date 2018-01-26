@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.GeolocationPermissions;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -30,26 +35,44 @@ public class WebViewFragment extends BaseFragment {
     private static WebViewFragment instance;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
         if (webView == null) {
+            CookieSyncManager.createInstance(getContext());
+            CookieSyncManager.getInstance().startSync();
             webView = new WebView(getActivity());
         }
         if (!rotated()) {
+            CookieManager cookieManager = CookieManager.getInstance();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                cookieManager.setAcceptThirdPartyCookies(webView,true);
+            } else {
+                cookieManager.setAcceptCookie(true);
+            }
             webView.getSettings().setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    if(url == null || url.startsWith("/") || url.startsWith("#") || url.contains("fitcool") || url.contains("youtube")) {
+                    if (url == null || url.startsWith("/") || url.startsWith("#") || url.contains("fitcool") || url.contains("youtube")) {
                         return false;
                     }
                     return true;
                 }
             });
+            webView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                    //Required functionality here
+                    return super.onJsAlert(view, url, message, result);
+                }
+
+                public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                    callback.invoke(origin, true, false);
+                }
+            });
             PreferenceMaster master = new PreferenceMaster(getContext());
-            if(!master.getValue(FitcoolFirebaseInstanceIDService.IS_SEND, false) &&  FirebaseInstanceId.getInstance().getToken() != null) {
+            if (!master.getValue(FitcoolFirebaseInstanceIDService.IS_SEND, false) && FirebaseInstanceId.getInstance().getToken() != null) {
                 FitcoolFirebaseInstanceIDService.sendRegistrationToServer(getContext(), FirebaseInstanceId.getInstance().getToken());
             }
             webView.loadUrl(getUrl());
@@ -63,7 +86,7 @@ public class WebViewFragment extends BaseFragment {
         return instance;
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return getArguments().getString(URL_ARG);
     }
 

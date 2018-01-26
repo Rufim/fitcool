@@ -9,6 +9,7 @@ import android.webkit.WebView;
 
 import ru.kazantsev.template.activity.BaseActivity;
 import ru.kazantsev.template.util.FragmentBuilder;
+import ru.kazantsev.template.util.GuiUtils;
 import ru.kazantsev.template.util.TextUtils;
 import ru.webclient.fitcool.fragment.WebViewFragment;
 
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity {
                         return;
                     }
                     this.doubleBackToExitPressedOnce = true;
-                    showSnackbar(R.string.back_to_exit);
+                    GuiUtils.showSnackbar(this.container, R.string.back_to_exit, getResources().getColor(R.color.white),  GuiUtils.getThemeColor(this, R.attr.colorPrimary));
                     new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
                 } else {
                     super.onBackPressed();

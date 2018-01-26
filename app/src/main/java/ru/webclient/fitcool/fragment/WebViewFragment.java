@@ -68,6 +68,14 @@ public class WebViewFragment extends BaseFragment {
     }
 
 
+    @Override
+    public boolean allowBackPress() {
+        if (webView.copyBackForwardList().getCurrentIndex() > 0) {
+            webView.goBack();
+            return false;
+        }
+        return true;
+    }
 
     /**
      * let us know if the webView has been rotated.

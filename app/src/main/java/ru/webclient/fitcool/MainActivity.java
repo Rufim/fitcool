@@ -2,6 +2,7 @@ package ru.webclient.fitcool;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.webkit.WebView;
@@ -15,6 +16,8 @@ import ru.webclient.fitcool.fragment.WebViewFragment;
  * Created by Admin on 28.03.2017.
  */
 public class MainActivity extends BaseActivity {
+
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,6 @@ public class MainActivity extends BaseActivity {
                 });
         hideActionBar();
         lockDrawerClosed();
-
     }
 
     protected void handleIntent(Intent intent) {
@@ -63,6 +65,30 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Fragment fr = this.getCurrentFragment();
+        if(fr instanceof BaseActivity.BackCallback) {
+            if(((BaseActivity.BackCallback)fr).allowBackPress()) {
+                if (getSupportFragmentManager().getBackStackEntryCount() <= 0) {
+                    if (doubleBackToExitPressedOnce) {
+                        super.onBackPressed();
+                        return;
+                    }
+                    this.doubleBackToExitPressedOnce = true;
+                    showSnackbar(R.string.back_to_exit);
+                    new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+                } else {
+                    super.onBackPressed();
+                }
+                System.gc();
+            }
+        } else {
+            super.onBackPressed();
+            System.gc();
+        }
+
+    }
 
 
 }

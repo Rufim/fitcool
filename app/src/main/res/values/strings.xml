@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FITCOOL</string>
+    <string name="back_to_exit">Нажмите еще раз для выхода</string>
 </resources>

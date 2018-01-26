@@ -96,7 +96,7 @@ public class FitcoolFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher_round)
+                .setSmallIcon(R.drawable.ic_small_icon)
                 .setContentTitle(data.get("title"))
                 .setContentText(data.get("message"))
                 .setAutoCancel(true)

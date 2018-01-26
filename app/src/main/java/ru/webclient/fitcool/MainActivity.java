@@ -47,13 +47,20 @@ public class MainActivity extends BaseActivity {
     }
 
     protected void handleIntent(Intent intent) {
-        FragmentBuilder builder = new FragmentBuilder(getSupportFragmentManager());
+        String url;
         if(intent == null || TextUtils.isEmpty(intent.getStringExtra(WebViewFragment.URL_ARG))) {
-            builder.putArg(WebViewFragment.URL_ARG, "https://fitcool.org/");
+            url = "https://fitcool.org/";
         } else {
-            builder.putArg(WebViewFragment.URL_ARG, intent.getStringExtra(WebViewFragment.URL_ARG));
+            url = intent.getStringExtra(WebViewFragment.URL_ARG);
         }
-        replaceFragment(WebViewFragment.class, builder);
+        Fragment fr = getCurrentFragment();
+        if(fr == null || !(fr instanceof WebViewFragment)) {
+            FragmentBuilder builder = new FragmentBuilder(getSupportFragmentManager());
+            builder.putArg(WebViewFragment.URL_ARG, url);
+            replaceFragment(WebViewFragment.class, builder);
+        } else {
+            ((WebViewFragment) fr).getWebView().loadUrl(url);
+        }
     }
 
 

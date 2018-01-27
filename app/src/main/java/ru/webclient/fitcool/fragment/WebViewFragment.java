@@ -1,6 +1,5 @@
 package ru.webclient.fitcool.fragment;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,7 +16,6 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -32,6 +30,7 @@ import java.util.Date;
 
 import ru.kazantsev.template.fragments.BaseFragment;
 import ru.kazantsev.template.util.PreferenceMaster;
+import ru.kazantsev.template.util.TextUtils;
 import ru.webclient.fitcool.service.FitcoolFirebaseInstanceIDService;
 
 /**
@@ -168,8 +167,11 @@ public class WebViewFragment extends BaseFragment {
                 }
             });
             PreferenceMaster master = new PreferenceMaster(getContext());
-            if (!master.getValue(FitcoolFirebaseInstanceIDService.IS_SEND, false) && FirebaseInstanceId.getInstance().getToken() != null) {
-                FitcoolFirebaseInstanceIDService.sendRegistrationToServer(getContext(), FirebaseInstanceId.getInstance().getToken());
+            if(TextUtils.notEmpty(FirebaseInstanceId.getInstance().getToken())) {
+                String token = FirebaseInstanceId.getInstance().getToken();
+                webView.addJavascriptInterface(new FitcoolFirebaseInstanceIDService.MyJavaInterface(token), FitcoolFirebaseInstanceIDService.JS_NAME);
+                master.putValue(FitcoolFirebaseInstanceIDService.IS_SEND, true);
+                master.putValue(FitcoolFirebaseInstanceIDService.LAST_TOKEN, token);
             }
             webView.loadUrl(getUrl());
         }

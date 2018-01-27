@@ -9,11 +9,9 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import net.vrallev.android.cat.Cat;
 
-import ru.kazantsev.template.util.AndroidSystemUtils;
 import ru.kazantsev.template.util.GuiUtils;
 import ru.kazantsev.template.util.PreferenceMaster;
 import ru.kazantsev.template.util.SystemUtils;
-import ru.webclient.fitcool.MainActivity;
 import ru.webclient.fitcool.fragment.WebViewFragment;
 
 /**
@@ -23,7 +21,7 @@ public class FitcoolFirebaseInstanceIDService extends FirebaseInstanceIdService 
 
     public static final String IS_SEND = "isSend";
     public static final String LAST_TOKEN = "lastToken";
-    private static final String JS_NAME = "droid";
+    public static final String JS_NAME = "droid";
     private static final String TAG = "MyFirebaseIIDService";
     private static String appToken = null;
     private static Thread update;
@@ -75,7 +73,7 @@ public class FitcoolFirebaseInstanceIDService extends FirebaseInstanceIdService 
                             public void run(Object... objects) {
                                 WebView webView = WebViewFragment.getInstance().getWebView();
                                 String token = appToken;
-                                webView.addJavascriptInterface(new TokenObject(token), JS_NAME);
+                                webView.addJavascriptInterface(new MyJavaInterface(token), JS_NAME);
                                 update = null;
                                 master.putValue(IS_SEND, true);
                                 master.putValue(LAST_TOKEN, token);
@@ -88,11 +86,11 @@ public class FitcoolFirebaseInstanceIDService extends FirebaseInstanceIdService 
         }
     }
 
-    public static class TokenObject {
+    public static class MyJavaInterface {
 
         final String token;
 
-        TokenObject(String token) {
+        public MyJavaInterface(String token) {
             this.token = token;
         }
 

@@ -24,27 +24,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         toolbarClassic = true;
         super.onCreate(savedInstanceState);
-        final View decorView = getWindow().getDecorView();
-        // Hide both the navigation bar and the status bar.
-        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-        // a general rule, you should design your app to hide the status bar whenever you
-        // hide the navigation bar.
-        final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                |   View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-        decorView.setOnSystemUiVisibilityChangeListener
-                (visibility -> {
-                    // Note that system bars will only be "visible" if none of the
-                    // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
-                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                        // TODO: The system bars are visible. Make any desired
-                        decorView.postDelayed(() -> decorView.setSystemUiVisibility(uiOptions), 4000);
-                    } else {
-                        // TODO: The system bars are NOT visible. Make any desired
-
-                    }
-                });
         hideActionBar();
         lockDrawerClosed();
     }

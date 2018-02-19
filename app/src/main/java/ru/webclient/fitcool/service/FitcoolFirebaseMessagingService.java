@@ -9,6 +9,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -55,7 +56,7 @@ public class FitcoolFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getData() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getData());
-            sendNotification(remoteMessage.getData());
+            sendNotification(getApplicationContext(), remoteMessage.getData());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -87,15 +88,15 @@ public class FitcoolFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Create and show a simple notification containing the received FCM message.
      */
-    private void sendNotification(Map<String, String> data) {
-        Intent intent = new Intent(this, MainActivity.class);
+    public static void sendNotification(Context context, Map<String, String> data) {
+        Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("url", data.get("url"));
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(data.get("title"))
                 .setContentText(data.get("message"))
                 .setAutoCancel(true)
@@ -103,14 +104,15 @@ public class FitcoolFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             notificationBuilder.setSmallIcon(R.drawable.ic_small_icon);
+            notificationBuilder.setColor(ContextCompat.getColor(context, R.color.colorNotification));
         } else {
             notificationBuilder.setSmallIcon(R.drawable.ic_launcher);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationBuilder.setChannelId(getNotificationChannel(getApplicationContext()).getId());
+            notificationBuilder.setChannelId(getNotificationChannel(context).getId());
         }
         NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(data.hashCode(), notificationBuilder.build());
     }

@@ -32,6 +32,7 @@ import ru.kazantsev.template.fragments.BaseFragment;
 import ru.kazantsev.template.util.PreferenceMaster;
 import ru.kazantsev.template.util.TextUtils;
 import ru.webclient.fitcool.service.FitcoolFirebaseInstanceIDService;
+import ru.webclient.fitcool.service.FitcoolFirebaseMessagingService;
 
 /**
  * Created by Admin on 22.01.2018.
@@ -167,11 +168,14 @@ public class WebViewFragment extends BaseFragment {
                 }
             });
             PreferenceMaster master = new PreferenceMaster(getContext());
+            String token = master.getValue(FitcoolFirebaseInstanceIDService.LAST_TOKEN);
             if(TextUtils.notEmpty(FirebaseInstanceId.getInstance().getToken())) {
-                String token = FirebaseInstanceId.getInstance().getToken();
+                token = FirebaseInstanceId.getInstance().getToken();
                 webView.addJavascriptInterface(new FitcoolFirebaseInstanceIDService.MyJavaInterface(token), FitcoolFirebaseInstanceIDService.JS_NAME);
                 master.putValue(FitcoolFirebaseInstanceIDService.IS_SEND, true);
                 master.putValue(FitcoolFirebaseInstanceIDService.LAST_TOKEN, token);
+            } else if(TextUtils.notEmpty(token)) {
+                webView.addJavascriptInterface(new FitcoolFirebaseInstanceIDService.MyJavaInterface(token), FitcoolFirebaseInstanceIDService.JS_NAME);
             }
             webView.loadUrl(getUrl());
         }

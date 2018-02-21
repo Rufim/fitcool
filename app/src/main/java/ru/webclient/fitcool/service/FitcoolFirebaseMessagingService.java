@@ -5,11 +5,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -102,12 +106,9 @@ public class FitcoolFirebaseMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            notificationBuilder.setSmallIcon(R.drawable.ic_small_icon);
-            notificationBuilder.setColor(ContextCompat.getColor(context, R.color.colorNotification));
-        } else {
-            notificationBuilder.setSmallIcon(R.drawable.ic_launcher);
-        }
+        notificationBuilder.setSmallIcon(R.drawable.ic_small_icon);
+        notificationBuilder.setColor(ContextCompat.getColor(context, R.color.colorNotification));
+        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationBuilder.setChannelId(getNotificationChannel(context).getId());
         }

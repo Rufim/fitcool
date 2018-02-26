@@ -47,12 +47,6 @@ public class MainActivity extends BaseActivity {
         } else {
             ((WebViewFragment) fr).getWebView().loadUrl(url);
         }
-
-        Map<String, String> test = new HashMap<>();
-        test.put("url", url);
-        test.put("title", "HW");
-        test.put("message", "Hello world!");
-        FitcoolFirebaseMessagingService.sendNotification(this, test);
     }
 
     @Override

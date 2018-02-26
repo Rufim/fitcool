@@ -1,5 +1,6 @@
 package ru.webclient.fitcool.service;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
+import android.view.View;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -112,10 +114,16 @@ public class FitcoolFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationBuilder.setChannelId(getNotificationChannel(context).getId());
         }
+        Notification notification = notificationBuilder.build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.O ) {
+            int smallIconId = context.getResources().getIdentifier("right_icon", "id", android.R.class.getPackage().getName());
+            if (smallIconId != 0 && notification.contentView != null) {
+                notification.contentView.setViewVisibility(smallIconId, View.INVISIBLE);
+            }
+        }
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(data.hashCode(), notificationBuilder.build());
+        notificationManager.notify(data.hashCode(), notification);
     }
 
     public static NotificationChannel getNotificationChannel(Context context) {

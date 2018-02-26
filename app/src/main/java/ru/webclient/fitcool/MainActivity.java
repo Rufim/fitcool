@@ -7,11 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.webkit.WebView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ru.kazantsev.template.activity.BaseActivity;
 import ru.kazantsev.template.util.FragmentBuilder;
 import ru.kazantsev.template.util.GuiUtils;
 import ru.kazantsev.template.util.TextUtils;
 import ru.webclient.fitcool.fragment.WebViewFragment;
+import ru.webclient.fitcool.service.FitcoolFirebaseMessagingService;
 
 /**
  * Created by Admin on 28.03.2017.
@@ -43,6 +47,12 @@ public class MainActivity extends BaseActivity {
         } else {
             ((WebViewFragment) fr).getWebView().loadUrl(url);
         }
+
+        Map<String, String> test = new HashMap<>();
+        test.put("url", url);
+        test.put("title", "HW");
+        test.put("message", "Hello world!");
+        FitcoolFirebaseMessagingService.sendNotification(this, test);
     }
 
     @Override

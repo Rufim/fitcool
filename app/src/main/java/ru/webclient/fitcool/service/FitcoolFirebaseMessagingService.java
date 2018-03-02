@@ -110,7 +110,9 @@ public class FitcoolFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent);
         notificationBuilder.setSmallIcon(R.drawable.ic_small_icon);
         notificationBuilder.setColor(ContextCompat.getColor(context, R.color.colorNotification));
-        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationBuilder.setChannelId(getNotificationChannel(context).getId());
         }

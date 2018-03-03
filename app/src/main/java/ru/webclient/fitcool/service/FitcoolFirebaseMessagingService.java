@@ -117,7 +117,7 @@ public class FitcoolFirebaseMessagingService extends FirebaseMessagingService {
             notificationBuilder.setChannelId(getNotificationChannel(context).getId());
         }
         Notification notification = notificationBuilder.build();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.O ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             int smallIconId = context.getResources().getIdentifier("right_icon", "id", android.R.class.getPackage().getName());
             if (smallIconId != 0 && notification.contentView != null) {
                 notification.contentView.setViewVisibility(smallIconId, View.INVISIBLE);
